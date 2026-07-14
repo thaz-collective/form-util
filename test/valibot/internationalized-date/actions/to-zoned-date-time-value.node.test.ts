@@ -188,4 +188,13 @@ describe('should return dataset with issues', () => {
       issues: [{ ...baseIssue, input: value, received: '"Invalid conversion option"' }],
     });
   });
+
+  test('for a ZonedDateTime with an unrecognized time zone (conversion throws)', () => {
+    const value = new ZonedDateTime(2024, 1, 1, 'Not/AZone', 0, 0, 0, 0);
+    expect(action['~run']({ typed: true, value }, {})).toStrictEqual({
+      typed: false,
+      value,
+      issues: [{ ...baseIssue, input: value, received: expect.any(String) }],
+    });
+  });
 });
