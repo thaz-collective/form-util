@@ -21,10 +21,8 @@ export interface ToPlainDateTimeAction<
  * Creates a transformation action that converts a value to a {@link Temporal.PlainDateTime}.
  *
  * Accepted input types and their conversions:
- * - {@link String} — parsed using RFC 9557.
- * - {@link Temporal.ZonedDateTime} — `.toPlainDateTime()` is called.
  * - `@internationalized/date` {@link ZonedDateTime} — converted via string round-trip and `.toPlainDateTime()`.
- * - `@internationalized/date` {@link CalendarDateTime} — converted via string round-trip.
+ * - `@internationalized/date` {@link CalendarDateTime}
  * - {@link Temporal.PlainDateTime} — passed through unchanged.
  *
  * All other input types produce a validation issue.
@@ -37,10 +35,8 @@ export function toPlainDateTime<TInput>(): ToPlainDateTimeAction<TInput, undefin
  * Creates a transformation action that converts a value to a {@link Temporal.PlainDateTime}.
  *
  * Accepted input types and their conversions:
- * - {@link String} — parsed using RFC 9557.
- * - {@link Temporal.ZonedDateTime} — `.toPlainDateTime()` is called.
- * - `@internationalized/date` {@link ZonedDateTime} — converted via string round-trip and `.toPlainDateTime()`.
- * - `@internationalized/date` {@link CalendarDateTime} — converted via string round-trip.
+ * - `@internationalized/date` {@link ZonedDateTime}
+ * - `@internationalized/date` {@link CalendarDateTime}
  * - {@link Temporal.PlainDateTime} — passed through unchanged.
  *
  * All other input types produce a validation issue.
@@ -66,11 +62,7 @@ export function toPlainDateTime(
       const { value } = dataset;
 
       try {
-        if (typeof value === 'string') {
-          dataset.value = Temporal.PlainDateTime.from(value);
-        } else if (value instanceof Temporal.ZonedDateTime) {
-          dataset.value = value.toPlainDateTime();
-        } else if (value instanceof ZonedDateTime) {
+        if (value instanceof ZonedDateTime) {
           dataset.value = Temporal.ZonedDateTime.from(value.toString()).toPlainDateTime();
         } else if (value instanceof CalendarDateTime) {
           dataset.value = Temporal.PlainDateTime.from(value.toString());

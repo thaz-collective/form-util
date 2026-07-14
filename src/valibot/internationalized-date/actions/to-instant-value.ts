@@ -21,12 +21,7 @@ export interface ToInstantAction<
  * Creates a transformation action that converts a value to a {@link Temporal.Instant}.
  *
  * Accepted input types and their conversions:
- * - {@link String} — parsed using RFC 9557.
- * - {@link Number} — interpreted as epoch milliseconds.
- * - {@link BigInt} — interpreted as epoch nanoseconds.
- * - {@link Date} — converted via `Date.getTime()` (epoch milliseconds).
- * - {@link Temporal.ZonedDateTime} — `.toInstant()` is called.
- * - `@internationalized/date` {@link ZonedDateTime} — converted via string round-trip and `.toInstant()`.
+ * - `@internationalized/date` {@link ZonedDateTime}
  * - {@link Temporal.Instant} — passed through unchanged.
  *
  * All other input types produce a validation issue.
@@ -39,12 +34,7 @@ export function toInstant<TInput>(): ToInstantAction<TInput, undefined>;
  * Creates a transformation action that converts a value to a {@link Temporal.Instant}.
  *
  * Accepted input types and their conversions:
- * - {@link String} — parsed using RFC 9557.
- * - {@link Number} — interpreted as epoch milliseconds.
- * - {@link BigInt} — interpreted as epoch nanoseconds.
- * - {@link Date} — converted via `Date.getTime()` (epoch milliseconds).
- * - {@link Temporal.ZonedDateTime} — `.toInstant()` is called.
- * - `@internationalized/date` {@link ZonedDateTime} — converted via string round-trip and `.toInstant()`.
+ * - `@internationalized/date` {@link ZonedDateTime}
  * - {@link Temporal.Instant} — passed through unchanged.
  *
  * All other input types produce a validation issue.
@@ -70,17 +60,7 @@ export function toInstant(
       const { value } = dataset;
 
       try {
-        if (typeof value === 'string') {
-          dataset.value = Temporal.Instant.from(value);
-        } else if (typeof value === 'number') {
-          dataset.value = Temporal.Instant.fromEpochMilliseconds(value);
-        } else if (typeof value === 'bigint') {
-          dataset.value = Temporal.Instant.fromEpochNanoseconds(value);
-        } else if (value instanceof Date) {
-          dataset.value = Temporal.Instant.fromEpochMilliseconds(value.getTime());
-        } else if (value instanceof Temporal.ZonedDateTime) {
-          dataset.value = value.toInstant();
-        } else if (value instanceof ZonedDateTime) {
+        if (value instanceof ZonedDateTime) {
           dataset.value = Temporal.ZonedDateTime.from(value.toString()).toInstant();
         } else if (!(value instanceof Temporal.Instant)) {
           _addIssue(this, 'instant', dataset, config, {

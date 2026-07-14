@@ -21,12 +21,9 @@ export interface ToPlainTimeAction<
  * Creates a transformation action that converts a value to a {@link Temporal.PlainTime}.
  *
  * Accepted input types and their conversions:
- * - {@link String} — parsed using RFC 9557.
- * - {@link Temporal.ZonedDateTime} — `.toPlainTime()` is called.
- * - {@link Temporal.PlainDateTime} — `.toPlainTime()` is called.
- * - `@internationalized/date` {@link ZonedDateTime} — converted via string round-trip and `.toPlainTime()`.
- * - `@internationalized/date` {@link CalendarDateTime} — converted via string round-trip and `.toPlainTime()`.
- * - `@internationalized/date` {@link Time} — converted via string round-trip.
+ * - `@internationalized/date` {@link ZonedDateTime}
+ * - `@internationalized/date` {@link CalendarDateTime}
+ * - `@internationalized/date` {@link Time}
  * - {@link Temporal.PlainTime} — passed through unchanged.
  *
  * All other input types produce a validation issue.
@@ -39,12 +36,9 @@ export function toPlainTime<TInput>(): ToPlainTimeAction<TInput, undefined>;
  * Creates a transformation action that converts a value to a {@link Temporal.PlainTime}.
  *
  * Accepted input types and their conversions:
- * - {@link String} — parsed using RFC 9557.
- * - {@link Temporal.ZonedDateTime} — `.toPlainTime()` is called.
- * - {@link Temporal.PlainDateTime} — `.toPlainTime()` is called.
- * - `@internationalized/date` {@link ZonedDateTime} — converted via string round-trip and `.toPlainTime()`.
- * - `@internationalized/date` {@link CalendarDateTime} — converted via string round-trip and `.toPlainTime()`.
- * - `@internationalized/date` {@link Time} — converted via string round-trip.
+ * - `@internationalized/date` {@link ZonedDateTime}
+ * - `@internationalized/date` {@link CalendarDateTime}
+ * - `@internationalized/date` {@link Time}
  * - {@link Temporal.PlainTime} — passed through unchanged.
  *
  * All other input types produce a validation issue.
@@ -70,13 +64,7 @@ export function toPlainTime(
       const { value } = dataset;
 
       try {
-        if (typeof value === 'string') {
-          dataset.value = Temporal.PlainTime.from(value);
-        } else if (value instanceof Temporal.ZonedDateTime) {
-          dataset.value = value.toPlainTime();
-        } else if (value instanceof Temporal.PlainDateTime) {
-          dataset.value = value.toPlainTime();
-        } else if (value instanceof ZonedDateTime) {
+        if (value instanceof ZonedDateTime) {
           dataset.value = Temporal.ZonedDateTime.from(value.toString()).toPlainTime();
         } else if (value instanceof CalendarDateTime) {
           dataset.value = Temporal.PlainDateTime.from(value.toString()).toPlainTime();

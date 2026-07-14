@@ -21,8 +21,7 @@ export interface ToZonedDateTimeAction<
  * Creates a transformation action that converts a value to a {@link Temporal.ZonedDateTime}.
  *
  * Accepted input types and their conversions:
- * - {@link String} — parsed using RFC 9557.
- * - `@internationalized/date` {@link ZonedDateTime} — converted via string round-trip.
+ * - `@internationalized/date` {@link ZonedDateTime}
  * - {@link Temporal.ZonedDateTime} — passed through unchanged.
  *
  * All other input types produce a validation issue.
@@ -35,8 +34,7 @@ export function toZonedDateTime<TInput>(): ToZonedDateTimeAction<TInput, undefin
  * Creates a transformation action that converts a value to a {@link Temporal.ZonedDateTime}.
  *
  * Accepted input types and their conversions:
- * - {@link String} — parsed using RFC 9557.
- * - `@internationalized/date` {@link ZonedDateTime} — converted via string round-trip.
+ * - `@internationalized/date` {@link ZonedDateTime}
  * - {@link Temporal.ZonedDateTime} — passed through unchanged.
  *
  * All other input types produce a validation issue.
@@ -62,9 +60,7 @@ export function toZonedDateTime(
       const { value } = dataset;
 
       try {
-        if (typeof value === 'string') {
-          dataset.value = Temporal.ZonedDateTime.from(value);
-        } else if (value instanceof ZonedDateTime) {
+        if (value instanceof ZonedDateTime) {
           dataset.value = Temporal.ZonedDateTime.from(value.toString());
         } else if (!(value instanceof Temporal.ZonedDateTime)) {
           _addIssue(this, 'zonedDateTime', dataset, config, {
