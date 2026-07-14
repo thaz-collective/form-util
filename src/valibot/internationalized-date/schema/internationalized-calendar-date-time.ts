@@ -40,7 +40,7 @@ export function internationalizedCalendarDateTime(): InternationalizedCalendarDa
  * @returns A schema representing {@link CalendarDateTime}.
  */
 export function internationalizedCalendarDateTime<
-  const TMessage extends ErrorMessage<InternationalizedCalendarDateTimeIssue>,
+  const TMessage extends ErrorMessage<InternationalizedCalendarDateTimeIssue> | undefined,
 >(message: TMessage): InternationalizedCalendarDateTimeSchema<TMessage>;
 
 export function internationalizedCalendarDateTime(

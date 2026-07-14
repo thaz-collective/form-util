@@ -40,7 +40,7 @@ export function internationalizedZonedDateTime(): InternationalizedZonedDateTime
  * @returns A schema representing {@link ZonedDateTime}.
  */
 export function internationalizedZonedDateTime<
-  const TMessage extends ErrorMessage<InternationalizedZonedDateTimeIssue>,
+  const TMessage extends ErrorMessage<InternationalizedZonedDateTimeIssue> | undefined,
 >(message: TMessage): InternationalizedZonedDateTimeSchema<TMessage>;
 
 export function internationalizedZonedDateTime(

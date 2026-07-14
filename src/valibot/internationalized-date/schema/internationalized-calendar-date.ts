@@ -39,9 +39,9 @@ export function internationalizedCalendarDate(): InternationalizedCalendarDateSc
  *
  * @returns A schema representing {@link CalendarDate}.
  */
-export function internationalizedCalendarDate<const TMessage extends ErrorMessage<InternationalizedCalendarDateIssue>>(
-  message: TMessage,
-): InternationalizedCalendarDateSchema<TMessage>;
+export function internationalizedCalendarDate<
+  const TMessage extends ErrorMessage<InternationalizedCalendarDateIssue> | undefined,
+>(message: TMessage): InternationalizedCalendarDateSchema<TMessage>;
 
 export function internationalizedCalendarDate(
   message?: ErrorMessage<InternationalizedCalendarDateIssue>,

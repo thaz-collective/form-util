@@ -39,7 +39,7 @@ export function internationalizedTime(): InternationalizedTimeSchema<undefined>;
  *
  * @returns A schema representing {@link Time}.
  */
-export function internationalizedTime<const TMessage extends ErrorMessage<InternationalizedTimeIssue>>(
+export function internationalizedTime<const TMessage extends ErrorMessage<InternationalizedTimeIssue> | undefined>(
   message: TMessage,
 ): InternationalizedTimeSchema<TMessage>;
 

@@ -20,27 +20,27 @@ export type StringAction = v.BaseValidation<string, string, v.BaseIssue<unknown>
  * @returns A valibot validation schema that outputs `string` | `null`.
  */
 export function _stringNullable(messages: FormWrongTypeMessage, ...actions: StringAction[]) {
-    return v.union(
-        [
-            v.null(),
-            v.pipe(
-                v.undefined(),
-                v.transform(() => null),
-            ),
-            v.pipe(
-                v.string(messages.wrongTypeMessage),
-                v.trim(),
-                v.union([
-                    v.pipe(
-                        v.literal(''),
-                        v.transform(() => null),
-                    ),
-                    v.pipe(v.string(messages.wrongTypeMessage), ...actions),
-                ]),
-            ),
-        ],
-        messages.wrongTypeMessage,
-    );
+  return v.union(
+    [
+      v.null(),
+      v.pipe(
+        v.undefined(),
+        v.transform(() => null),
+      ),
+      v.pipe(
+        v.string(messages.wrongTypeMessage),
+        v.trim(),
+        v.union([
+          v.pipe(
+            v.literal(''),
+            v.transform(() => null),
+          ),
+          v.pipe(v.string(messages.wrongTypeMessage), ...actions),
+        ]),
+      ),
+    ],
+    messages.wrongTypeMessage,
+  );
 }
 
 /**
@@ -55,7 +55,7 @@ export function _stringNullable(messages: FormWrongTypeMessage, ...actions: Stri
  * @returns A valibot validation schema that outputs `string`.
  */
 export function _stringRequired(messages: FormRequiredMessage, ...actions: StringAction[]) {
-    return v.pipe(_stringNullable(messages), v.pipe(v.string(messages.requiredMessage), ...actions));
+  return v.pipe(_stringNullable(messages), v.pipe(v.string(messages.requiredMessage), ...actions));
 }
 
 /**
@@ -71,14 +71,14 @@ export function _stringRequired(messages: FormRequiredMessage, ...actions: Strin
  * @returns A valibot validation schema that outputs `string` or `string` | `null` based on message type.
  */
 export function string<T extends FormWrongTypeMessage | FormRequiredMessage>(
-    messages: T,
-    ...actions: StringAction[]
+  messages: T,
+  ...actions: StringAction[]
 ): T extends FormRequiredMessage ? ReturnType<typeof _stringRequired> : ReturnType<typeof _stringNullable>;
 
 export function string(messages: FormWrongTypeMessage | FormRequiredMessage, ...actions: StringAction[]) {
-    if (isFormRequiredMessage(messages)) {
-        return _stringRequired(messages, ...actions);
-    }
+  if (isFormRequiredMessage(messages)) {
+    return _stringRequired(messages, ...actions);
+  }
 
-    return _stringNullable(messages, ...actions);
+  return _stringNullable(messages, ...actions);
 }
