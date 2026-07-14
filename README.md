@@ -1,18 +1,24 @@
 # [@thaz/form-util](https://github.com/thaz-collective/form-util)
 
 Form validation utilities for applications and libraries in the thaz-collective namespace. Provides a set of
-[Valibot](https://valibot.dev/) schemas built for form input: they coerce raw, string, and
-[`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/index.html) values into
-[`Temporal`](https://tc39.es/proposal-temporal/docs/) values (via [`@thaz/temporal-util`](https://github.com/thaz-collective/temporal-util)),
-normalize blank/`undefined` input to `null`, and let a single call site opt into "required" behavior with its own
-error message.
+[Valibot](https://valibot.dev/) schemas built for standard form input. Allows for a wider input type and
+then validates towards the preferred output type. Handles type coercion for various types under the hood.
+
+To support this library we use [`Temporal`](https://tc39.es/proposal-temporal/docs/) polyfill and existing
+utilities (via [`@thaz/temporal-util`](https://github.com/thaz-collective/temporal-util)). These allow us to coerce
+string, number, and date like types appropriately.
+
+Currently, we also use [`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/index.html). This is for compatibility with React-Aria the component
+library of choice in the thaz-collective ecosystem. This allows us to pass in our desired `Temporal` types and do
+internal transformations to `@internationalized/date` until `Temporal` can be used safely in all browsers
+and is supported by React-Aria.
 
 ---
 
 ## Installation
 
 ```bash
-vp add @thaz/form-util @internationalized/date @js-temporal/polyfill @thaz/temporal-util valibot
+vp add valibot @js-temporal/polyfill @thaz/temporal-util @internationalized/date @thaz/form-util
 ```
 
 ---
@@ -21,10 +27,10 @@ vp add @thaz/form-util @internationalized/date @js-temporal/polyfill @thaz/tempo
 
 Every schema builder in this package is overloaded on the shape of the `messages` argument you pass it:
 
-| Type                   | Shape                                                   | Effect                                                                                         |
-| ---------------------- | ------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| `FormWrongTypeMessage` | `{ wrongTypeMessage: string }`                          | Builds the **nullable** variant - blank/`undefined`/`null` input succeeds as `null`.           |
-| `FormRequiredMessage`  | `{ wrongTypeMessage: string; requiredMessage: string }` | Builds the **required** variant - blank/`undefined`/`null` input fails with `requiredMessage`. |
+| Type                   | Shape                                                   | Effect                                                                                   |
+| ---------------------- | ------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `FormWrongTypeMessage` | `{ wrongTypeMessage: string }`                          | Builds the **nullable** variant - `undefined` is coerced to `null` but are allowed.      |
+| `FormRequiredMessage`  | `{ wrongTypeMessage: string; requiredMessage: string }` | Builds the **required** variant - `undefined`/`null` input fails with `requiredMessage`. |
 
 `isFormRequiredMessage(messages)` is the type guard each schema builder uses internally to pick a variant (it narrows
 to `FormRequiredMessage` when `requiredMessage` is present) - it's exported in case you want the same branching in
@@ -38,10 +44,14 @@ f.string({ wrongTypeMessage: 'Must be a string' });
 
 // required: fails for blank input
 f.string({ wrongTypeMessage: 'Must be a string', requiredMessage: 'This field is required' });
-```
 
-Each builder also accepts any number of trailing Valibot actions (e.g. `v.minLength(3)`, `t.temporalMinValue(...)`),
-applied after the value has been coerced to its final type.
+// additional validation is available to the final output type on each schema builder
+f.string(
+  { wrongTypeMessage: 'Must be a string', requiredMessage: 'This field is required' },
+  `v.minLength(3)`,
+  `v.maxLength(20)`,
+);
+```
 
 ---
 
@@ -61,19 +71,19 @@ v.parse(nameSchema, '  Ada  '); // -> "Ada" (trimmed)
 v.parse(ageSchema, undefined); // -> null
 ```
 
-| Schema        | Output             | Accepts/transforms                                                             |
-| ------------- | ------------------ | ------------------------------------------------------------------------------ |
-| `string(...)` | `string` or `null` | `null`, `undefined`, `string` - trimmed; blank/whitespace-only becomes `null`. |
-| `number(...)` | `number` or `null` | `null`, `undefined`, `number` - `NaN`/`Infinity` rejected via `v.finite()`.    |
+| Schema        | Accepts/transforms            | Output   | Notes                                                              |
+| ------------- | ----------------------------- | -------- | ------------------------------------------------------------------ |
+| `string(...)` | `null`, `undefined`, `string` | `string` | is automatically trimmed and blank/whitespace-only becomes `null`. |
+| `number(...)` | `null`, `undefined`, `number` | `number` |                                                                    |
 
 ---
 
 ## Temporal schemas
 
-Each of these accepts the matching `Temporal` type directly, related `Temporal` types it can be derived from, and the
-equivalent `@internationalized/date` type (useful for date picker components built on that library) - all converted
-through [`@thaz/temporal-util`](https://github.com/thaz-collective/temporal-util) so the same comparison/clamp actions
-from that package work as trailing actions here.
+Each of these accepts the matching `Temporal` type directly or related `Temporal` types that the output can be derived
+from. Internally it also could accept types from `@internationalized/date` although these should likely be internal to
+the component and not passed directly to the schema. Supports additional validations provided
+by [`@thaz/temporal-util`](https://github.com/thaz-collective/temporal-util).
 
 ```ts
 import { Temporal } from '@js-temporal/polyfill';
@@ -84,18 +94,19 @@ import * as f from '@thaz/form-util';
 const startDateSchema = f.plainDate(
   { wrongTypeMessage: 'Must be a date', requiredMessage: 'Start date is required' },
   t.temporalMinValue(Temporal.PlainDate.from('2024-01-01')),
+  t.temporalMaxValue(Temporal.PlainDate.from('2025-01-01')),
 );
 
-v.parse(startDateSchema, Temporal.PlainDate.from('2024-06-01')); // Temporal.PlainDate
+v.parse(startDateSchema, Temporal.PlainDate.from('2024-06-01'));
 ```
 
-| Schema               | Output                             | Accepts/transforms                                                                                                                                                           |
-| -------------------- | ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `zonedDateTime(...)` | `Temporal.ZonedDateTime` or `null` | `Temporal.ZonedDateTime` / `@internationalized/date` `ZonedDateTime` (via string round-trip)                                                                                 |
-| `instant(...)`       | `Temporal.Instant` or `null`       | `Temporal.Instant` / `Temporal.ZonedDateTime` / `@internationalized/date` `ZonedDateTime`                                                                                    |
-| `plainDateTime(...)` | `Temporal.PlainDateTime` or `null` | `Temporal.PlainDateTime` / `Temporal.ZonedDateTime` (`.toPlainDateTime()`) / `@internationalized/date` `ZonedDateTime`, `CalendarDateTime`                                   |
-| `plainDate(...)`     | `Temporal.PlainDate` or `null`     | `Temporal.PlainDate` / `Temporal.ZonedDateTime`, `Temporal.PlainDateTime` (`.toPlainDate()`) / `@internationalized/date` `ZonedDateTime`, `CalendarDateTime`, `CalendarDate` |
-| `plainTime(...)`     | `Temporal.PlainTime` or `null`     | `Temporal.PlainTime` / `Temporal.ZonedDateTime`, `Temporal.PlainDateTime` (`.toPlainTime()`) / `@internationalized/date` `ZonedDateTime`, `CalendarDateTime`, `Time`         |
+| Schema               | Accepts/transforms                                                                                                                                                                                               | Output                   |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------ |
+| `zonedDateTime(...)` | `Temporal.ZonedDateTime` / `@internationalized/date` `ZonedDateTime`                                                                                                                                             | `Temporal.ZonedDateTime` |
+| `instant(...)`       | `Temporal.ZonedDateTime` / `Temporal.Instant` / `@internationalized/date` `ZonedDateTime`                                                                                                                        | `Temporal.Instant`       |
+| `plainDateTime(...)` | `Temporal.ZonedDateTime` / `Temporal.PlainDateTime` / `@internationalized/date` `ZonedDateTime` / `@internationalized/date` `CalendarDateTime`                                                                   | `Temporal.PlainDateTime` |
+| `plainDate(...)`     | `Temporal.ZonedDateTime` / `Temporal.PlainDateTime` / `Temporal.PlainDate` / `@internationalized/date` `ZonedDateTime` / `@internationalized/date` `CalendarDateTime` / `@internationalized/date` `CalendarDate` | `Temporal.PlainDate`     |
+| `plainTime(...)`     | `Temporal.ZonedDateTime` / `Temporal.PlainDateTime` / `Temporal.PlainTime` / `@internationalized/date` `ZonedDateTime` / `@internationalized/date` `CalendarDateTime` / `@internationalized/date` `Time`         | `Temporal.PlainTime`     |
 
 All five also accept `null` and `undefined` as input (mapped to `null` in the nullable variant, or rejected with
 `requiredMessage` in the required variant).
@@ -119,15 +130,15 @@ v.parse(buildQuantitySchema(true), 5); // throws - below the minimum order quant
 v.parse(buildQuantitySchema(false), 5); // 5
 ```
 
-`when` only accepts actions that validate without changing the value's type (`v.GenericPipeAction<TInput, TInput>`) -
-it can't be used to select between two transformations.
+`when` only accepts actions that validate without changing the value's type (`v.GenericPipeAction<TInput, TInput>`).
+It cannot be used to select between two transformations.
 
 ---
 
 ## References
 
+- [Valibot](https://valibot.dev/) - the schema library these schemas and actions extend
 - [Temporal proposal](https://tc39.es/proposal-temporal/docs/) - the `Temporal` API these schemas normalize input into
 - [`@js-temporal/polyfill`](https://www.npmjs.com/package/@js-temporal/polyfill) - the polyfill this package targets
-- [`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/index.html) - the date/time types accepted alongside `Temporal`
 - [`@thaz/temporal-util`](https://github.com/thaz-collective/temporal-util) - `Temporal` schemas and comparison actions this package builds on
-- [Valibot](https://valibot.dev/) - the schema library these schemas and actions extend
+- [`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/index.html) - the date/time types accepted alongside `Temporal`
