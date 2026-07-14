@@ -8,7 +8,7 @@ import { _getStandardProps, _addIssue } from 'valibot';
 export interface InternationalizedCalendarDateIssue extends BaseIssue<unknown> {
   kind: 'schema';
   type: 'internationalized_calendar_date';
-  expects: '@internationalized/date.CalendarDate';
+  expected: '@internationalized/date.CalendarDate';
 }
 
 /**

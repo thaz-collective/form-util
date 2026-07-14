@@ -8,7 +8,7 @@ import { _getStandardProps, _addIssue } from 'valibot';
 export interface InternationalizedZonedDateTimeIssue extends BaseIssue<unknown> {
   kind: 'schema';
   type: 'internationalized_zoned_date_time';
-  expects: '@internationalized/date.ZonedDateTime';
+  expected: '@internationalized/date.ZonedDateTime';
 }
 
 /**
