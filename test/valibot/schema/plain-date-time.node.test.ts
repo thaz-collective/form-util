@@ -355,7 +355,6 @@ describe('required variant', () => {
             message: 'Wrong type',
           },
         ],
-        ZonedDateTime,
       });
     });
 
