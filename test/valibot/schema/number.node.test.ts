@@ -1,13 +1,13 @@
 import * as v from 'valibot';
 import { describe, expect, test } from 'vite-plus/test';
 
-import { string } from '#src/valibot/schema/string';
+import { number } from '#src/valibot/schema/number';
 
 const wrongTypeMessages = { wrongTypeMessage: 'Wrong type' };
 const requiredMessages = { wrongTypeMessage: 'Wrong type', requiredMessage: 'Required' };
 
 describe('nullable variant', () => {
-  const schema = string(wrongTypeMessages);
+  const schema = number(wrongTypeMessages);
 
   describe('should return dataset without issues', () => {
     test('passes null through', () => {
@@ -18,21 +18,16 @@ describe('nullable variant', () => {
       expect(v.safeParse(schema, undefined)).toMatchObject({ success: true, output: null });
     });
 
-    test('coerces empty string to null', () => {
-      expect(v.safeParse(schema, '')).toMatchObject({ success: true, output: null });
+    test('passes zero through', () => {
+      expect(v.safeParse(schema, 0)).toMatchObject({ success: true, output: 0 });
     });
 
-    test('coerces whitespace-only string to null', () => {
-      expect(v.safeParse(schema, '   ')).toMatchObject({ success: true, output: null });
-      expect(v.safeParse(schema, '\t\n')).toMatchObject({ success: true, output: null });
+    test('passes valid number as-is', () => {
+      expect(v.safeParse(schema, 5)).toMatchObject({ success: true, output: 5 });
     });
 
-    test('trims and passes non-blank string', () => {
-      expect(v.safeParse(schema, '  hello  ')).toMatchObject({ success: true, output: 'hello' });
-    });
-
-    test('passes valid string as-is', () => {
-      expect(v.safeParse(schema, 'hello')).toMatchObject({ success: true, output: 'hello' });
+    test('passes valid negative number as-is', () => {
+      expect(v.safeParse(schema, -5)).toMatchObject({ success: true, output: -5 });
     });
   });
 
@@ -76,10 +71,23 @@ describe('nullable variant', () => {
       });
     });
 
-    test('rejects numbers', () => {
-      expect(v.safeParse(schema, 42)).toMatchObject({
+    test('rejects strings', () => {
+      expect(v.safeParse(schema, 'abc')).toMatchObject({
         success: false,
-        output: 42,
+        output: 'abc',
+        issues: [
+          {
+            kind: 'schema',
+            message: 'Wrong type',
+          },
+        ],
+      });
+    });
+
+    test('rejects non-finite numbers', () => {
+      expect(v.safeParse(schema, Number.NaN)).toMatchObject({
+        success: false,
+        output: Number.NaN,
         issues: [
           {
             kind: 'schema',
@@ -90,23 +98,27 @@ describe('nullable variant', () => {
     });
   });
 
-  test('passes extra string actions', () => {
-    const schemaWithAction = string(wrongTypeMessages, v.minLength(3, 'too short'));
-    expect(v.safeParse(schemaWithAction, 'hi')).toMatchObject({ success: false, output: 'hi' });
-    expect(v.safeParse(schemaWithAction, 'hey')).toMatchObject({ success: true, output: 'hey' });
+  test('passes extra number actions', () => {
+    const schemaWithAction = number(wrongTypeMessages, v.minValue(10, 'too small'));
+    expect(v.safeParse(schemaWithAction, 5)).toMatchObject({ success: false, output: 5 });
+    expect(v.safeParse(schemaWithAction, 15)).toMatchObject({ success: true, output: 15 });
   });
 });
 
 describe('required variant', () => {
-  const schema = string(requiredMessages);
+  const schema = number(requiredMessages);
 
   describe('should return dataset without issues', () => {
-    test('trims and passes non-blank string', () => {
-      expect(v.safeParse(schema, '  hello  ')).toMatchObject({ success: true, output: 'hello' });
+    test('passes zero through', () => {
+      expect(v.safeParse(schema, 0)).toMatchObject({ success: true, output: 0 });
     });
 
-    test('passes valid string as-is', () => {
-      expect(v.safeParse(schema, 'hello')).toMatchObject({ success: true, output: 'hello' });
+    test('passes valid number as-is', () => {
+      expect(v.safeParse(schema, 5)).toMatchObject({ success: true, output: 5 });
+    });
+
+    test('passes valid negative number as-is', () => {
+      expect(v.safeParse(schema, -5)).toMatchObject({ success: true, output: -5 });
     });
   });
 
@@ -137,42 +149,6 @@ describe('required variant', () => {
       });
     });
 
-    test('rejects empty string', () => {
-      expect(v.safeParse(schema, '')).toMatchObject({
-        success: false,
-        output: null,
-        issues: [
-          {
-            kind: 'schema',
-            message: 'Required',
-          },
-        ],
-      });
-    });
-
-    test('rejects whitespace-only string', () => {
-      expect(v.safeParse(schema, '   ')).toMatchObject({
-        success: false,
-        output: null,
-        issues: [
-          {
-            kind: 'schema',
-            message: 'Required',
-          },
-        ],
-      });
-      expect(v.safeParse(schema, '\t\n')).toMatchObject({
-        success: false,
-        output: null,
-        issues: [
-          {
-            kind: 'schema',
-            message: 'Required',
-          },
-        ],
-      });
-    });
-
     test('rejects objects', () => {
       expect(v.safeParse(schema, {})).toMatchObject({
         success: false,
@@ -212,10 +188,23 @@ describe('required variant', () => {
       });
     });
 
-    test('rejects numbers', () => {
-      expect(v.safeParse(schema, 42)).toMatchObject({
+    test('rejects strings', () => {
+      expect(v.safeParse(schema, 'abc')).toMatchObject({
         success: false,
-        output: 42,
+        output: 'abc',
+        issues: [
+          {
+            kind: 'schema',
+            message: 'Wrong type',
+          },
+        ],
+      });
+    });
+
+    test('rejects non-finite numbers', () => {
+      expect(v.safeParse(schema, Number.NaN)).toMatchObject({
+        success: false,
+        output: Number.NaN,
         issues: [
           {
             kind: 'schema',
@@ -226,9 +215,9 @@ describe('required variant', () => {
     });
   });
 
-  test('passes extra string actions', () => {
-    const schemaWithAction = string(requiredMessages, v.minLength(3, 'too short'));
-    expect(v.safeParse(schemaWithAction, 'hi')).toMatchObject({ success: false, output: 'hi' });
-    expect(v.safeParse(schemaWithAction, 'hey')).toMatchObject({ success: true, output: 'hey' });
+  test('passes extra number actions', () => {
+    const schemaWithAction = number(requiredMessages, v.minValue(10, 'too small'));
+    expect(v.safeParse(schemaWithAction, 5)).toMatchObject({ success: false, output: 5 });
+    expect(v.safeParse(schemaWithAction, 15)).toMatchObject({ success: true, output: 15 });
   });
 });
