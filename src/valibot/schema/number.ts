@@ -21,9 +21,9 @@ export type NumberAction = v.BaseValidation<number, number, v.BaseIssue<unknown>
 export function _numberNullable(messages: FormWrongTypeMessage, ...actions: NumberAction[]) {
   return v.union(
     [
-      v.null(),
+      v.null(messages.wrongTypeMessage),
       v.pipe(
-        v.undefined(),
+        v.undefined(messages.wrongTypeMessage),
         v.transform(() => null),
       ),
       v.pipe(v.number(messages.wrongTypeMessage), v.finite(messages.wrongTypeMessage), ...actions),

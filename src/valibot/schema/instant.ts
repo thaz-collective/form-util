@@ -27,15 +27,15 @@ export type InstantAction = v.BaseValidation<Temporal.Instant, Temporal.Instant,
 export function _instantNullable(messages: FormWrongTypeMessage, ...actions: InstantAction[]) {
   return v.union(
     [
-      v.null(),
+      v.null(messages.wrongTypeMessage),
       v.pipe(
-        v.undefined(),
+        v.undefined(messages.wrongTypeMessage),
         v.transform(() => null),
       ),
       v.pipe(t.instant(messages.wrongTypeMessage), ...actions),
       v.pipe(
         t.zonedDateTime(messages.wrongTypeMessage),
-        v.transform((val) => val.toInstant()),
+        t.toInstant(messages.wrongTypeMessage),
         v.pipe(t.instant(messages.wrongTypeMessage), ...actions),
       ),
       v.pipe(

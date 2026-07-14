@@ -22,9 +22,9 @@ export type StringAction = v.BaseValidation<string, string, v.BaseIssue<unknown>
 export function _stringNullable(messages: FormWrongTypeMessage, ...actions: StringAction[]) {
   return v.union(
     [
-      v.null(),
+      v.null(messages.wrongTypeMessage),
       v.pipe(
-        v.undefined(),
+        v.undefined(messages.wrongTypeMessage),
         v.transform(() => null),
       ),
       v.pipe(
