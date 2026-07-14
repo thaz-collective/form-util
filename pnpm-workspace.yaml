@@ -8,20 +8,14 @@ catalog:
   '@thaz/temporal-util': 1.0.0-rc.1
   '@thaz/typescript-config': 1.0.0-rc.1
   '@types/node': 24.13.2
-  '@types/react': 19.2.17
-  '@vitejs/plugin-react': 6.0.3
-  '@vitest/browser-playwright': 4.1.10
   '@vitest/coverage-istanbul': 4.1.10
   '@vitest/ui': 4.1.10
-  playwright: 1.61.1
-  react: 19.2.7
   typescript: 6.0.3
   valibot: 1.4.2
   vite: npm:@voidzero-dev/vite-plus-core@0.2.4
   vite-plugin-externalize-deps: 0.10.0
   vite-plus: 0.2.4
   vitest: 4.1.10
-  vitest-browser-react: 2.2.0
 
 catalogMode: prefer
 # Watch this issue: https://github.com/pnpm/pnpm/issues/11238

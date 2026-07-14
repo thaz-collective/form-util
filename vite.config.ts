@@ -1,11 +1,8 @@
-import vitePluginReact from '@vitejs/plugin-react';
 import { externalizeDeps } from 'vite-plugin-externalize-deps';
 import { defineConfig } from 'vite-plus';
 
 import { oxfmtConfig } from '@thaz/oxfmt-config';
 import { nativeConfig, libraryCodeConfigRules } from '@thaz/oxlint-config';
-
-import { playwright } from 'vite-plus/test/browser-playwright';
 
 export default defineConfig({
   staged: {
@@ -37,7 +34,7 @@ export default defineConfig({
   resolve: {
     tsconfigPaths: true,
   },
-  plugins: [externalizeDeps(), vitePluginReact()],
+  plugins: [externalizeDeps()],
   pack: {
     dts: {
       build: true,
@@ -47,17 +44,12 @@ export default defineConfig({
     },
     entry: {
       index: './src/index.ts',
-      valibot: './src/valibot/index.ts',
     },
     exports: {
       customExports: {
         '.': {
           types: './dist/index.d.mts',
           import: './dist/index.mjs',
-        },
-        './valibot': {
-          types: './dist/valibot.d.mts',
-          import: './dist/valibot.mjs',
         },
         './formatter': {
           types: './dist/formatter.d.mts',
@@ -84,20 +76,6 @@ export default defineConfig({
         test: {
           name: 'node',
           include: ['test/**/*.node.test.ts'],
-        },
-      },
-      {
-        extends: true,
-        test: {
-          include: ['test/**/*.browser.test.{ts,tsx}'],
-          browser: {
-            enabled: true,
-            provider: playwright(),
-            instances: [
-              { name: 'browser-chromium', browser: 'chromium' },
-              { name: 'browser-firefox', browser: 'firefox' },
-            ],
-          },
         },
       },
       {
