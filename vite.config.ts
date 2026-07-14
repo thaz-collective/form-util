@@ -51,10 +51,6 @@ export default defineConfig({
           types: './dist/index.d.mts',
           import: './dist/index.mjs',
         },
-        './formatter': {
-          types: './dist/formatter.d.mts',
-          import: './dist/formatter.mjs',
-        },
       },
     },
   },
