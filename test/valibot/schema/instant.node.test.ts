@@ -126,7 +126,7 @@ describe('nullable variant', () => {
       });
     });
 
-    test('rejects @internationalized/date ZonedDateTime - CalendarDateTime', () => {
+    test('rejects @internationalized/date - CalendarDateTime', () => {
       expect(v.safeParse(schema, aInternationalizeCalendarDateTime)).toMatchObject({
         success: false,
         output: aInternationalizeCalendarDateTime,
@@ -139,7 +139,7 @@ describe('nullable variant', () => {
       });
     });
 
-    test('rejects @internationalized/date ZonedDateTime - CalendarDate', () => {
+    test('rejects @internationalized/date - CalendarDate', () => {
       expect(v.safeParse(schema, aInternationalizeCalendarDate)).toMatchObject({
         success: false,
         output: aInternationalizeCalendarDate,
@@ -152,7 +152,7 @@ describe('nullable variant', () => {
       });
     });
 
-    test('rejects @internationalized/date ZonedDateTime - Time', () => {
+    test('rejects @internationalized/date - Time', () => {
       expect(v.safeParse(schema, aInternationalizeTime)).toMatchObject({
         success: false,
         output: aInternationalizeTime,
@@ -344,7 +344,7 @@ describe('required variant', () => {
       });
     });
 
-    test('rejects @internationalized/date ZonedDateTime - CalendarDateTime', () => {
+    test('rejects @internationalized/date - CalendarDateTime', () => {
       expect(v.safeParse(schema, aInternationalizeCalendarDateTime)).toMatchObject({
         success: false,
         output: aInternationalizeCalendarDateTime,
@@ -357,7 +357,7 @@ describe('required variant', () => {
       });
     });
 
-    test('rejects @internationalized/date ZonedDateTime - CalendarDate', () => {
+    test('rejects @internationalized/date - CalendarDate', () => {
       expect(v.safeParse(schema, aInternationalizeCalendarDate)).toMatchObject({
         success: false,
         output: aInternationalizeCalendarDate,
@@ -370,7 +370,7 @@ describe('required variant', () => {
       });
     });
 
-    test('rejects @internationalized/date ZonedDateTime - Time', () => {
+    test('rejects @internationalized/date - Time', () => {
       expect(v.safeParse(schema, aInternationalizeTime)).toMatchObject({
         success: false,
         output: aInternationalizeTime,
