@@ -5,21 +5,19 @@ import { Temporal } from '@js-temporal/polyfill';
 import * as v from 'valibot';
 import { describe, expect, test } from 'vite-plus/test';
 
-import { instant } from '#src/valibot/schema/instant';
+import { zonedDateTime } from '#src/valibot/schema/zoned-date-time';
 
 const wrongTypeMessages = { wrongTypeMessage: 'Wrong type' };
 const requiredMessages = { wrongTypeMessage: 'Wrong type', requiredMessage: 'Required' };
 
-const anInstant = Temporal.Instant.from('2024-06-15T17:30:00Z');
-const aZonedDateTime = Temporal.ZonedDateTime.from('2024-06-15T12:30:00-05:00[America/Chicago]');
-
-const aInternationalizeZonedDateTime = parseZonedDateTime(aZonedDateTime.toString());
+const aZonedDateTime = Temporal.ZonedDateTime.from('2024-06-15T17:30:00+00:00[UTC]');
+const aInternationalizeZonedDateTime = parseZonedDateTime('2024-06-15T12:30:00-05:00[America/Chicago]');
 const aInternationalizeCalendarDateTime = toCalendarDateTime(aInternationalizeZonedDateTime);
 const aInternationalizeCalendarDate = toCalendarDate(aInternationalizeZonedDateTime);
 const aInternationalizeTime = toTime(aInternationalizeZonedDateTime);
 
 describe('nullable variant', () => {
-  const schema = instant(wrongTypeMessages);
+  const schema = zonedDateTime(wrongTypeMessages);
 
   describe('should return dataset without issues', () => {
     test('passes null through', () => {
@@ -30,18 +28,14 @@ describe('nullable variant', () => {
       expect(v.safeParse(schema, undefined)).toMatchObject({ success: true, output: null });
     });
 
-    test('passes an existing Temporal.Instant as-is', () => {
-      expect(v.safeParse(schema, anInstant)).toMatchObject({ success: true, output: anInstant });
-    });
-
-    test('converts a Temporal.ZonedDateTime', () => {
-      expect(v.safeParse(schema, aZonedDateTime)).toMatchObject({ success: true, output: anInstant });
+    test('passes an existing Temporal.ZonedDateTime as-is', () => {
+      expect(v.safeParse(schema, aZonedDateTime)).toMatchObject({ success: true, output: aZonedDateTime });
     });
 
     test('converts an @internationalized/date ZonedDateTime', () => {
       expect(v.safeParse(schema, aInternationalizeZonedDateTime)).toMatchObject({
         success: true,
-        output: anInstant,
+        output: aZonedDateTime,
       });
     });
   });
@@ -165,6 +159,20 @@ describe('nullable variant', () => {
       });
     });
 
+    test('rejects other Temporal types - Instant', () => {
+      const value = aZonedDateTime.toInstant();
+      expect(v.safeParse(schema, value)).toMatchObject({
+        success: false,
+        output: value,
+        issues: [
+          {
+            kind: 'schema',
+            message: 'Wrong type',
+          },
+        ],
+      });
+    });
+
     test('rejects other Temporal types - PlainDateTime', () => {
       const value = Temporal.PlainDateTime.from(aZonedDateTime.toString());
       expect(v.safeParse(schema, value)).toMatchObject({
@@ -208,32 +216,28 @@ describe('nullable variant', () => {
     });
   });
 
-  test('passes extra instant actions', () => {
-    const min = Temporal.Instant.fromEpochMilliseconds(2_000_000);
-    const schemaWithAction = instant(wrongTypeMessages, t.temporalMinValue(min));
-    const early = Temporal.Instant.fromEpochMilliseconds(1_000_000);
-    const late = Temporal.Instant.fromEpochMilliseconds(3_000_000);
+  test('passes extra zonedDateTime actions', () => {
+    const min = Temporal.ZonedDateTime.from('2025-01-01T00:00:00+00:00[UTC]');
+    const schemaWithAction = zonedDateTime(wrongTypeMessages, t.temporalMinValue(min));
+    const early = Temporal.ZonedDateTime.from('2024-01-01T00:00:00+00:00[UTC]');
+    const late = Temporal.ZonedDateTime.from('2026-01-01T00:00:00+00:00[UTC]');
     expect(v.safeParse(schemaWithAction, early)).toMatchObject({ success: false, output: early });
     expect(v.safeParse(schemaWithAction, late)).toMatchObject({ success: true, output: late });
   });
 });
 
 describe('required variant', () => {
-  const schema = instant(requiredMessages);
+  const schema = zonedDateTime(requiredMessages);
 
   describe('should return dataset without issues', () => {
-    test('passes an existing Temporal.Instant as-is', () => {
-      expect(v.safeParse(schema, anInstant)).toMatchObject({ success: true, output: anInstant });
-    });
-
-    test('converts a Temporal.ZonedDateTime', () => {
-      expect(v.safeParse(schema, aZonedDateTime)).toMatchObject({ success: true, output: anInstant });
+    test('passes an existing Temporal.ZonedDateTime as-is', () => {
+      expect(v.safeParse(schema, aZonedDateTime)).toMatchObject({ success: true, output: aZonedDateTime });
     });
 
     test('converts an @internationalized/date ZonedDateTime', () => {
       expect(v.safeParse(schema, aInternationalizeZonedDateTime)).toMatchObject({
         success: true,
-        output: anInstant,
+        output: Temporal.ZonedDateTime.from(aInternationalizeZonedDateTime.toString()),
       });
     });
   });
@@ -383,6 +387,20 @@ describe('required variant', () => {
       });
     });
 
+    test('rejects other Temporal types - Instant', () => {
+      const value = aZonedDateTime.toInstant();
+      expect(v.safeParse(schema, value)).toMatchObject({
+        success: false,
+        output: value,
+        issues: [
+          {
+            kind: 'schema',
+            message: 'Wrong type',
+          },
+        ],
+      });
+    });
+
     test('rejects other Temporal types - PlainDateTime', () => {
       const value = Temporal.PlainDateTime.from(aZonedDateTime.toString());
       expect(v.safeParse(schema, value)).toMatchObject({
@@ -426,11 +444,11 @@ describe('required variant', () => {
     });
   });
 
-  test('passes extra instant actions', () => {
-    const min = Temporal.Instant.fromEpochMilliseconds(2_000_000);
-    const schemaWithAction = instant(requiredMessages, t.temporalMinValue(min));
-    const early = Temporal.Instant.fromEpochMilliseconds(1_000_000);
-    const late = Temporal.Instant.fromEpochMilliseconds(3_000_000);
+  test('passes extra zonedDateTime actions', () => {
+    const min = Temporal.ZonedDateTime.from('2025-01-01T00:00:00+00:00[UTC]');
+    const schemaWithAction = zonedDateTime(requiredMessages, t.temporalMinValue(min));
+    const early = Temporal.ZonedDateTime.from('2024-01-01T00:00:00+00:00[UTC]');
+    const late = Temporal.ZonedDateTime.from('2026-01-01T00:00:00+00:00[UTC]');
     expect(v.safeParse(schemaWithAction, early)).toMatchObject({ success: false, output: early });
     expect(v.safeParse(schemaWithAction, late)).toMatchObject({ success: true, output: late });
   });
