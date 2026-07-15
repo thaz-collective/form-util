@@ -1,17 +1,17 @@
 # [@thaz/form-util](https://github.com/thaz-collective/form-util)
 
 Form validation utilities for applications and libraries in the thaz-collective namespace. Provides a set of
-[Valibot](https://valibot.dev/) schemas built for standard form input. Allows for a wider input type and
+[Valibot](https://valibot.dev/) schemas built for standard form input. Allows for a wider range of input types and
 then validates towards the preferred output type. Handles type coercion for various types under the hood.
 
-To support this library we use [`Temporal`](https://tc39.es/proposal-temporal/docs/) polyfill and existing
+To support this library, we use the [`Temporal`](https://tc39.es/proposal-temporal/docs/) polyfill and existing
 utilities (via [`@thaz/temporal-util`](https://github.com/thaz-collective/temporal-util)). These allow us to coerce
-string, number, and date like types appropriately.
+date-like types appropriately.
 
-Currently, we also use [`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/index.html). This is for compatibility with React-Aria the component
-library of choice in the thaz-collective ecosystem. This allows us to pass in our desired `Temporal` types and do
-internal transformations to `@internationalized/date` until `Temporal` can be used safely in all browsers
-and is supported by React-Aria.
+Currently, we also use [`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/index.html). 
+This is for compatibility with React-Aria, the component library of choice in the thaz-collective ecosystem.
+This allows us to pass in our desired `Temporal` types and do internal transformations to `@internationalized/date`
+until `Temporal` can be used safely in all browsers and is supported by React-Aria.
 
 ---
 
@@ -27,16 +27,17 @@ vp add valibot @js-temporal/polyfill @thaz/temporal-util @internationalized/date
 
 Every schema builder in this package is overloaded on the shape of the `messages` argument you pass it:
 
-| Type                   | Shape                                                   | Effect                                                                                   |
-| ---------------------- | ------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
-| `FormWrongTypeMessage` | `{ wrongTypeMessage: string }`                          | Builds the **nullable** variant - `undefined` is coerced to `null` but are allowed.      |
-| `FormRequiredMessage`  | `{ wrongTypeMessage: string; requiredMessage: string }` | Builds the **required** variant - `undefined`/`null` input fails with `requiredMessage`. |
+| Type                   | Shape                                                   | Effect                                                                                          |
+| ---------------------- | ------------------------------------------------------- |-------------------------------------------------------------------------------------------------|
+| `FormWrongTypeMessage` | `{ wrongTypeMessage: string }`                          | Builds the **nullable** variant - `undefined`/`null` input is allowed and normalized to `null`. |
+| `FormRequiredMessage`  | `{ wrongTypeMessage: string; requiredMessage: string }` | Builds the **required** variant - `undefined`/`null` input fails with `requiredMessage`.        |
 
 `isFormRequiredMessage(messages)` is the type guard each schema builder uses internally to pick a variant (it narrows
 to `FormRequiredMessage` when `requiredMessage` is present) - it's exported in case you want the same branching in
 your own code.
 
 ```ts
+import * as v from 'valibot';
 import * as f from '@thaz/form-util';
 
 // nullable: succeeds with `null` for blank input
@@ -48,8 +49,8 @@ f.string({ wrongTypeMessage: 'Must be a string', requiredMessage: 'This field is
 // additional validation is available to the final output type on each schema builder
 f.string(
   { wrongTypeMessage: 'Must be a string', requiredMessage: 'This field is required' },
-  `v.minLength(3)`,
-  `v.maxLength(20)`,
+  v.minLength(3),
+  v.maxLength(20),
 );
 ```
 
@@ -71,10 +72,10 @@ v.parse(nameSchema, '  Ada  '); // -> "Ada" (trimmed)
 v.parse(ageSchema, undefined); // -> null
 ```
 
-| Schema        | Accepts/transforms            | Output   | Notes                                                              |
-| ------------- | ----------------------------- | -------- | ------------------------------------------------------------------ |
-| `string(...)` | `null`, `undefined`, `string` | `string` | is automatically trimmed and blank/whitespace-only becomes `null`. |
-| `number(...)` | `null`, `undefined`, `number` | `number` |                                                                    |
+| Schema        | Accepts/transforms            | Output   | Notes                                                                        |
+| ------------- | ----------------------------- | -------- | ---------------------------------------------------------------------------- |
+| `string(...)` | `null`, `undefined`, `string` | `string` | Output is automatically trimmed; blank/whitespace-only input becomes `null`. |
+| `number(...)` | `null`, `undefined`, `number` | `number` |                                                                              |
 
 ---
 
