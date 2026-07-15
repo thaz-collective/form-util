@@ -8,7 +8,7 @@ To support this library, we use the [`Temporal`](https://tc39.es/proposal-tempor
 utilities (via [`@thaz/temporal-util`](https://github.com/thaz-collective/temporal-util)). These allow us to coerce
 date-like types appropriately.
 
-Currently, we also use [`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/index.html). 
+Currently, we also use [`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/index.html).
 This is for compatibility with React-Aria, the component library of choice in the thaz-collective ecosystem.
 This allows us to pass in our desired `Temporal` types and do internal transformations to `@internationalized/date`
 until `Temporal` can be used safely in all browsers and is supported by React-Aria.
@@ -28,7 +28,7 @@ vp add valibot @js-temporal/polyfill @thaz/temporal-util @internationalized/date
 Every schema builder in this package is overloaded on the shape of the `messages` argument you pass it:
 
 | Type                   | Shape                                                   | Effect                                                                                          |
-| ---------------------- | ------------------------------------------------------- |-------------------------------------------------------------------------------------------------|
+| ---------------------- | ------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
 | `FormWrongTypeMessage` | `{ wrongTypeMessage: string }`                          | Builds the **nullable** variant - `undefined`/`null` input is allowed and normalized to `null`. |
 | `FormRequiredMessage`  | `{ wrongTypeMessage: string; requiredMessage: string }` | Builds the **required** variant - `undefined`/`null` input fails with `requiredMessage`.        |
 
@@ -82,7 +82,7 @@ v.parse(ageSchema, undefined); // -> null
 ## Temporal schemas
 
 Each of these accepts the matching `Temporal` type directly or related `Temporal` types that the output can be derived
-from. Internally it also could accept types from `@internationalized/date` although these should likely be internal to
+from. It can also accept types from `@internationalized/date` although these should likely be internal to
 the component and not passed directly to the schema. Supports additional validations provided
 by [`@thaz/temporal-util`](https://github.com/thaz-collective/temporal-util).
 
