@@ -1,6 +1,6 @@
 {
   "name": "@thaz/form-util",
-  "version": "1.0.0-rc.1",
+  "version": "1.0.0-rc.2",
   "description": "Set of form validation utilities for applications and libraries in the thaz collective namespace",
   "keywords": [
     "date",
@@ -45,7 +45,6 @@
   },
   "devDependencies": {
     "@internationalized/date": "catalog:",
-    "@js-temporal/polyfill": "catalog:",
     "@thaz/oxfmt-config": "catalog:",
     "@thaz/oxlint-config": "catalog:",
     "@thaz/temporal-util": "catalog:",
@@ -53,6 +52,7 @@
     "@types/node": "catalog:",
     "@vitest/coverage-istanbul": "catalog:",
     "@vitest/ui": "catalog:",
+    "temporal-polyfill": "catalog:",
     "typescript": "catalog:",
     "valibot": "catalog:",
     "vite": "catalog:",
@@ -61,13 +61,13 @@
     "vitest": "catalog:"
   },
   "peerDependencies": {
-    "@internationalized/date": "^3.12.2",
-    "@js-temporal/polyfill": "^0.5.1",
-    "@thaz/temporal-util": "^1.0.0-rc.1",
+    "@internationalized/date": "^3.12.3",
+    "@thaz/temporal-util": "^1.0.0-rc.2",
+    "temporal-polyfill": "^1.0.3",
     "valibot": "^1.4.2"
   },
   "engines": {
     "node": ">=24"
   },
-  "packageManager": "pnpm@11.11.0"
+  "packageManager": "pnpm@11.20.0"
 }

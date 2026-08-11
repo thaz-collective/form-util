@@ -2,7 +2,6 @@ import type { ToPlainTimeIssue } from '@thaz/temporal-util/valibot';
 
 import type { BaseTransformation, ErrorMessage, OutputDataset } from 'valibot';
 import { ZonedDateTime, CalendarDateTime, Time } from '@internationalized/date';
-import { Temporal } from '@js-temporal/polyfill';
 import { _addIssue } from 'valibot';
 
 /**

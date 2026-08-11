@@ -1,15 +1,15 @@
 blockExoticSubdeps: true
 
 catalog:
-  '@internationalized/date': 3.12.2
-  '@js-temporal/polyfill': 0.5.1
+  '@internationalized/date': 3.12.3
   '@thaz/oxfmt-config': 1.0.0-rc.1
   '@thaz/oxlint-config': 1.0.0-rc.1
-  '@thaz/temporal-util': 1.0.0-rc.1
+  '@thaz/temporal-util': 1.0.0-rc.2
   '@thaz/typescript-config': 1.0.0-rc.1
-  '@types/node': 24.13.2
+  '@types/node': 24.13.3
   '@vitest/coverage-istanbul': 4.1.10
   '@vitest/ui': 4.1.10
+  temporal-polyfill: ^1.0.3
   typescript: 6.0.3
   valibot: 1.4.2
   vite: npm:@voidzero-dev/vite-plus-core@0.2.4
@@ -22,10 +22,7 @@ catalogMode: prefer
 minimumReleaseAge: 4320 # 3 days just to be safe with the uptick of supply chain attacks
 
 minimumReleaseAgeExclude:
-  - '@thaz/temporal-util@1.0.0-rc.1'
-  - '@thaz/typescript-config@1.0.0-rc.1'
-  - '@thaz/oxfmt-config@1.0.0-rc.1'
-  - '@thaz/oxlint-config@1.0.0-rc.1'
+  - '@thaz/temporal-util@1.0.0-rc.2'
 
 overrides:
   vite: 'catalog:'

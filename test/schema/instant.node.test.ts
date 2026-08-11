@@ -1,7 +1,6 @@
 import * as t from '@thaz/temporal-util/valibot';
 
 import { ZonedDateTime, parseZonedDateTime, toCalendarDateTime, toCalendarDate, toTime } from '@internationalized/date';
-import { Temporal } from '@js-temporal/polyfill';
 import * as v from 'valibot';
 import { describe, expect, test } from 'vite-plus/test';
 

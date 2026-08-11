@@ -18,7 +18,7 @@ until `Temporal` can be used safely in all browsers and is supported by React-Ar
 ## Installation
 
 ```bash
-vp add valibot @js-temporal/polyfill @thaz/temporal-util @internationalized/date @thaz/form-util
+vp add valibot temporal-polyfill @thaz/temporal-util @internationalized/date @thaz/form-util
 ```
 
 ---
@@ -87,7 +87,7 @@ the component and not passed directly to the schema. Supports additional validat
 by [`@thaz/temporal-util`](https://github.com/thaz-collective/temporal-util).
 
 ```ts
-import { Temporal } from '@js-temporal/polyfill';
+import { Temporal } from 'temporal-polyfill';
 import * as t from '@thaz/temporal-util/valibot';
 import * as v from 'valibot';
 import * as f from '@thaz/form-util';
@@ -140,6 +140,6 @@ It cannot be used to select between two transformations.
 
 - [Valibot](https://valibot.dev/) - the schema library these schemas and actions extend
 - [Temporal proposal](https://tc39.es/proposal-temporal/docs/) - the `Temporal` API these schemas normalize input into
-- [`@js-temporal/polyfill`](https://www.npmjs.com/package/@js-temporal/polyfill) - the polyfill this package targets
+- [`temporal-polyfill`](https://www.npmjs.com/package/temporal-polyfill) - the polyfill this package targets as a peer if you don't already have the `Temporal` API in your runtime
 - [`@thaz/temporal-util`](https://github.com/thaz-collective/temporal-util) - `Temporal` schemas and comparison actions this package builds on
 - [`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/index.html) - the date/time types accepted alongside `Temporal`

@@ -1,5 +1,4 @@
 import { CalendarDate, parseZonedDateTime, CalendarDateTime, Time } from '@internationalized/date';
-import { Temporal } from '@js-temporal/polyfill';
 import { describe, expect, test } from 'vite-plus/test';
 
 import type {
