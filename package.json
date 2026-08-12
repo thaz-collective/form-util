@@ -1,6 +1,6 @@
 {
   "name": "@thaz/form-util",
-  "version": "1.0.0-rc.2",
+  "version": "1.0.0-rc.3",
   "description": "Set of form validation utilities for applications and libraries in the thaz collective namespace",
   "keywords": [
     "date",
@@ -74,5 +74,5 @@
   "engines": {
     "node": ">=24"
   },
-  "packageManager": "pnpm@11.20.0"
+  "packageManager": "pnpm@11.21.0"
 }
