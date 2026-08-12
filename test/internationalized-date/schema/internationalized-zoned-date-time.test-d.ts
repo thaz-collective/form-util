@@ -1,6 +1,7 @@
+import { describe, expectTypeOf, test } from 'vite-plus/test';
+
 import type { ZonedDateTime } from '@internationalized/date';
 import type { InferInput, InferIssue, InferOutput } from 'valibot';
-import { describe, expectTypeOf, test } from 'vite-plus/test';
 
 import type {
   InternationalizedZonedDateTimeIssue,

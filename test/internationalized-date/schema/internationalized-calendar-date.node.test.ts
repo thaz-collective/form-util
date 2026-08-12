@@ -1,5 +1,6 @@
-import { CalendarDate, parseZonedDateTime, CalendarDateTime, Time } from '@internationalized/date';
 import { describe, expect, test } from 'vite-plus/test';
+
+import { CalendarDate, parseZonedDateTime, CalendarDateTime, Time } from '@internationalized/date';
 
 import type {
   InternationalizedCalendarDateIssue,

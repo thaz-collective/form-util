@@ -1,7 +1,8 @@
+import { describe, expect, test } from 'vite-plus/test';
+
 import type { ToZonedDateTimeIssue } from '@thaz/temporal-util/valibot';
 
 import { ZonedDateTime, CalendarDateTime, CalendarDate, Time } from '@internationalized/date';
-import { describe, expect, test } from 'vite-plus/test';
 
 import type { ToZonedDateTimeAction } from '#src/internationalized-date/actions/to-zoned-date-time-value';
 import { toZonedDateTime } from '#src/internationalized-date/actions/to-zoned-date-time-value';

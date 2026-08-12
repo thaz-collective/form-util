@@ -1,5 +1,6 @@
-import * as v from 'valibot';
 import { describe, expect, test } from 'vite-plus/test';
+
+import * as v from 'valibot';
 
 import { string } from '#src/schema/string';
 

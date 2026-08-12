@@ -1,7 +1,8 @@
+import { describe, expect, test } from 'vite-plus/test';
+
 import type { ToPlainTimeIssue } from '@thaz/temporal-util/valibot';
 
 import { ZonedDateTime, CalendarDateTime, CalendarDate, Time } from '@internationalized/date';
-import { describe, expect, test } from 'vite-plus/test';
 
 import type { ToPlainTimeAction } from '#src/internationalized-date/actions/to-plain-time-value';
 import { toPlainTime } from '#src/internationalized-date/actions/to-plain-time-value';
