@@ -39,9 +39,9 @@ And in your `tsconfig.json`:
 
 ```json
 {
-    "compilerOptions": {
-        "lib": ["esnext.temporal", "esnext.intl", "esnext.date"]
-    }
+  "compilerOptions": {
+    "lib": ["esnext.temporal", "esnext.intl", "esnext.date"]
+  }
 }
 ```
 

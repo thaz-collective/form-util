@@ -66,6 +66,11 @@
     "temporal-polyfill": "^1.0.3",
     "valibot": "^1.4.2"
   },
+  "peerDependenciesMeta": {
+    "temporal-polyfill": {
+      "optional": true
+    }
+  },
   "engines": {
     "node": ">=24"
   },
