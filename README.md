@@ -4,7 +4,8 @@ Form validation utilities for applications and libraries in the thaz-collective 
 [Valibot](https://valibot.dev/) schemas built for standard form input. Allows for a wider range of input types and
 then validates towards the preferred output type. Handles type coercion for various types under the hood.
 
-To support this library, we use the [`Temporal`](https://tc39.es/proposal-temporal/docs/) polyfill and existing
+To support this library, we use the [`Temporal`](https://tc39.es/proposal-temporal/docs/) (assumes a global `Temporal`, e.g. via
+[`temporal-polyfill`](https://www.npmjs.com/package/temporal-polyfill)) and existing
 utilities (via [`@thaz/temporal-util`](https://github.com/thaz-collective/temporal-util)). These allow us to coerce
 date-like types appropriately.
 
@@ -20,6 +21,33 @@ until `Temporal` can be used safely in all browsers and is supported by React-Ar
 ```bash
 vp add valibot temporal-polyfill @thaz/temporal-util @internationalized/date @thaz/form-util
 ```
+
+---
+
+## Requirements
+
+This library assumes a global `Temporal` (and Temporal-aware `Intl`) is already available at runtime — it does not
+bundle or import a Temporal polyfill itself. If you need one then [`temporal-polyfill`](https://www.npmjs.com/package/temporal-polyfill)
+is the recommendation. In your application's entry point, before any code from this package
+runs:
+
+```ts
+import 'temporal-polyfill/full/global';
+```
+
+And in your `tsconfig.json`:
+
+```json
+{
+    "compilerOptions": {
+        "lib": ["esnext.temporal", "esnext.intl", "esnext.date"]
+    }
+}
+```
+
+If your runtime ships native `Temporal` support, `temporal-polyfill` will detect and prefer it automatically — the
+import above is still required to guarantee the ambient global is installed one way or the other. If you are sure `Temporal`
+is in your runtime, then you do not need to install `temporal-polyfill`
 
 ---
 
