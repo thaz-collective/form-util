@@ -7,12 +7,18 @@ import type {
   InternationalizedDateTimeValue,
   InternationalizedDateValue,
   InternationalizedTimeValue,
+  MapInternationalizedToTemporalDateTime,
+  MapInternationalizedToTemporalDate,
+  MapInternationalizedToTemporalTime,
 } from './types';
 
 export function internationalizedToTemporalDateTime(value: ZonedDateTime): Temporal.ZonedDateTime;
 export function internationalizedToTemporalDateTime(value: CalendarDateTime): Temporal.PlainDateTime;
 export function internationalizedToTemporalDateTime(value: CalendarDate): Temporal.PlainDate;
 export function internationalizedToTemporalDateTime(value: Time): Temporal.PlainTime;
+export function internationalizedToTemporalDateTime<T extends InternationalizedDateTimeValue>(
+  value: T,
+): MapInternationalizedToTemporalDateTime<T>;
 export function internationalizedToTemporalDateTime(value: InternationalizedDateTimeValue): TemporalDateTimeValue {
   if (value instanceof ZonedDateTime) {
     return Temporal.ZonedDateTime.from({
@@ -58,6 +64,9 @@ export function internationalizedToTemporalDateTime(value: InternationalizedDate
 export function internationalizedToTemporalDate(value: ZonedDateTime): Temporal.ZonedDateTime;
 export function internationalizedToTemporalDate(value: CalendarDateTime): Temporal.PlainDateTime;
 export function internationalizedToTemporalDate(value: CalendarDate): Temporal.PlainDate;
+export function internationalizedToTemporalDate<T extends InternationalizedDateValue>(
+  value: T,
+): MapInternationalizedToTemporalDate<T>;
 export function internationalizedToTemporalDate(value: InternationalizedDateValue): TemporalDateValue {
   if (value instanceof ZonedDateTime) {
     return Temporal.ZonedDateTime.from({
@@ -94,6 +103,9 @@ export function internationalizedToTemporalDate(value: InternationalizedDateValu
 export function internationalizedToTemporalTime(value: ZonedDateTime): Temporal.ZonedDateTime;
 export function internationalizedToTemporalTime(value: CalendarDateTime): Temporal.PlainDateTime;
 export function internationalizedToTemporalTime(value: Time): Temporal.PlainTime;
+export function internationalizedToTemporalTime<T extends InternationalizedTimeValue>(
+  value: T,
+): MapInternationalizedToTemporalTime<T>;
 export function internationalizedToTemporalTime(value: InternationalizedTimeValue): TemporalTimeValue {
   if (value instanceof ZonedDateTime) {
     return Temporal.ZonedDateTime.from({
