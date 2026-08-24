@@ -31,8 +31,8 @@ catalogs:
       specifier: 4.1.10
       version: 4.1.10
     temporal-polyfill:
-      specifier: ^1.0.3
-      version: 1.0.3
+      specifier: ^1.0.4
+      version: 1.0.4
     typescript:
       specifier: 6.0.3
       version: 6.0.3
@@ -67,7 +67,7 @@ importers:
         version: 1.0.0-rc.2(oxlint-tsgolint@7.0.2001)(oxlint@1.77.0(oxlint-tsgolint@7.0.2001)(vite-plus@0.2.9(@types/node@24.13.3)(@vitest/coverage-istanbul@4.1.10)(@vitest/ui@4.1.10)(@voidzero-dev/vite-plus-core@0.2.9(@types/node@24.13.3)(typescript@6.0.3))(typescript@6.0.3)))
       '@thaz/temporal-util':
         specifier: 'catalog:'
-        version: 1.0.0-rc.3(temporal-polyfill@1.0.3)(valibot@1.4.2(typescript@6.0.3))
+        version: 1.0.0-rc.3(temporal-polyfill@1.0.4)(valibot@1.4.2(typescript@6.0.3))
       '@thaz/typescript-config':
         specifier: 'catalog:'
         version: 1.0.0-rc.2(typescript@6.0.3)
@@ -82,7 +82,7 @@ importers:
         version: 4.1.10(vitest@4.1.10)
       temporal-polyfill:
         specifier: 'catalog:'
-        version: 1.0.3
+        version: 1.0.4
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1156,14 +1156,14 @@ packages:
     resolution: {integrity: sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw==}
     engines: {node: '>=8'}
 
-  temporal-polyfill@1.0.3:
-    resolution: {integrity: sha512-U8vuzZBc+dfMIfl8wXWcedfI7AJCxJjjVBIRpJUvIz5+UAp555UJDHguKsfZqHWaHRSdVUThm7mqqIWhN/xPBQ==}
+  temporal-polyfill@1.0.4:
+    resolution: {integrity: sha512-MLEU0qOD2uXlz24oINNtdLZQl8RgmMxSnRtKEGZGGetTJjlRwQJjk+VsJ4EREaUoiaTb8NJOcUiKtoAiWn9EBg==}
 
   temporal-spec@1.0.1:
     resolution: {integrity: sha512-wxVoanmDeavXie1vu2JaQ3WIc3JZnWAOYFBsJyATaVsXsycKYUflGsyBmrRSnoCpZJpwPyr38VpgSUlQ8CbFxg==}
 
-  temporal-utils@1.0.1:
-    resolution: {integrity: sha512-HAixuesxFQIUaQk3ptX2jhfO/FsOkgVkDDMawvp6n/fkB1q6BKfs3lURw9I+pK/2e2e/q/vrLrxmeqauBoyGMQ==}
+  temporal-utils@1.0.2:
+    resolution: {integrity: sha512-1B8Dl4KzrOvsNUlpoWGno2VLQlxroLjDgc5NBjVC9ax9ymdo+ezfyvhyjEMx+IVfhINr6CIG2gcnlP95iRrybQ==}
 
   tinybench@2.9.0:
     resolution: {integrity: sha512-0+DUvqWMValLmha6lr4kD8iAMK1HzV0/aKnCtWb9v9641TnP/MFb7Pc2bxoxQjTXAErryXVgUOfv2YqNllqGeg==}
@@ -1599,11 +1599,11 @@ snapshots:
       oxlint: 1.77.0(oxlint-tsgolint@7.0.2001)(vite-plus@0.2.9(@types/node@24.13.3)(@vitest/coverage-istanbul@4.1.10)(@vitest/ui@4.1.10)(@voidzero-dev/vite-plus-core@0.2.9(@types/node@24.13.3)(typescript@6.0.3))(typescript@6.0.3))
       oxlint-tsgolint: 7.0.2001
 
-  '@thaz/temporal-util@1.0.0-rc.3(temporal-polyfill@1.0.3)(valibot@1.4.2(typescript@6.0.3))':
+  '@thaz/temporal-util@1.0.0-rc.3(temporal-polyfill@1.0.4)(valibot@1.4.2(typescript@6.0.3))':
     dependencies:
       valibot: 1.4.2(typescript@6.0.3)
     optionalDependencies:
-      temporal-polyfill: 1.0.3
+      temporal-polyfill: 1.0.4
 
   '@thaz/typescript-config@1.0.0-rc.2(typescript@6.0.3)':
     dependencies:
@@ -2101,14 +2101,14 @@ snapshots:
     dependencies:
       has-flag: 4.0.0
 
-  temporal-polyfill@1.0.3:
+  temporal-polyfill@1.0.4:
     dependencies:
       temporal-spec: 1.0.1
-      temporal-utils: 1.0.1
+      temporal-utils: 1.0.2
 
   temporal-spec@1.0.1: {}
 
-  temporal-utils@1.0.1: {}
+  temporal-utils@1.0.2: {}
 
   tinybench@2.9.0: {}
 

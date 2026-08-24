@@ -9,7 +9,7 @@ catalog:
   '@types/node': 24.13.3
   '@vitest/coverage-istanbul': 4.1.10
   '@vitest/ui': 4.1.10
-  temporal-polyfill: ^1.0.3
+  temporal-polyfill: ^1.0.4
   typescript: 6.0.3
   valibot: 1.4.2
   vite: npm:@voidzero-dev/vite-plus-core@0.2.9

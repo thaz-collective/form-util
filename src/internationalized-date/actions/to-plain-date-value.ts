@@ -4,6 +4,8 @@ import type { BaseTransformation, ErrorMessage, OutputDataset } from 'valibot';
 import { ZonedDateTime, CalendarDateTime, CalendarDate } from '@internationalized/date';
 import { _addIssue } from 'valibot';
 
+import { internationalizedToTemporalDateTime } from '#src/util/internationalized-to-temporal';
+
 /**
  * Transformation action that converts a value to a {@link Temporal.PlainDate}.
  */
@@ -64,11 +66,11 @@ export function toPlainDate(
 
       try {
         if (value instanceof ZonedDateTime) {
-          dataset.value = Temporal.ZonedDateTime.from(value.toString()).toPlainDate();
+          dataset.value = internationalizedToTemporalDateTime(value).toPlainDate();
         } else if (value instanceof CalendarDateTime) {
-          dataset.value = Temporal.PlainDateTime.from(value.toString()).toPlainDate();
+          dataset.value = internationalizedToTemporalDateTime(value).toPlainDate();
         } else if (value instanceof CalendarDate) {
-          dataset.value = Temporal.PlainDate.from(value.toString());
+          dataset.value = internationalizedToTemporalDateTime(value);
         } else if (!(value instanceof Temporal.PlainDate)) {
           _addIssue(this, 'plainDate', dataset, config, {
             received: '"Invalid conversion option"',

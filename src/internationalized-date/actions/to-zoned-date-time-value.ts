@@ -4,6 +4,8 @@ import type { BaseTransformation, ErrorMessage, OutputDataset } from 'valibot';
 import { ZonedDateTime } from '@internationalized/date';
 import { _addIssue } from 'valibot';
 
+import { internationalizedToTemporalDateTime } from '#src/util/internationalized-to-temporal';
+
 /**
  * Transformation action that converts a value to a {@link Temporal.ZonedDateTime}.
  */
@@ -60,7 +62,7 @@ export function toZonedDateTime(
 
       try {
         if (value instanceof ZonedDateTime) {
-          dataset.value = Temporal.ZonedDateTime.from(value.toString());
+          dataset.value = internationalizedToTemporalDateTime(value);
         } else if (!(value instanceof Temporal.ZonedDateTime)) {
           _addIssue(this, 'zonedDateTime', dataset, config, {
             received: '"Invalid conversion option"',

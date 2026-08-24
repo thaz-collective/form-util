@@ -16,18 +16,23 @@ export default defineConfig({
     tasks: {
       build: {
         command: 'vp pack',
+        input: [{ auto: true }, '!coverage/**'],
       },
       test: {
         command: 'vp test',
+        input: [{ auto: true }, '!coverage/**'],
       },
       check: {
         command: 'vp check',
+        input: [{ auto: true }, '!coverage/**'],
       },
       fmt: {
         command: 'vp fmt',
+        input: [{ auto: true }, '!coverage/**'],
       },
       lint: {
         command: 'vp lint',
+        input: [{ auto: true }, '!coverage/**'],
       },
     },
   },
@@ -44,12 +49,17 @@ export default defineConfig({
     },
     entry: {
       index: './src/index.ts',
+      util: './src/util/index.ts',
     },
     exports: {
       customExports: {
         '.': {
           types: './dist/index.d.mts',
           import: './dist/index.mjs',
+        },
+        './util': {
+          types: './dist/util/index.d.mts',
+          import: './dist/util/index.mjs',
         },
       },
     },
