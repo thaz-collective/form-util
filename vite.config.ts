@@ -58,8 +58,8 @@ export default defineConfig({
           import: './dist/index.mjs',
         },
         './util': {
-          types: './dist/util/index.d.mts',
-          import: './dist/util/index.mjs',
+          types: './dist/util.d.mts',
+          import: './dist/util.mjs',
         },
       },
     },
