@@ -1,7 +1,10 @@
 export type {
   TemporalDateTimeValue,
+  MappedTemporalDateTimeValue,
   TemporalDateValue,
+  MappedTemporalDateValue,
   TemporalTimeValue,
+  MappedTemporalTimeValue,
   InternationalizedDateTimeValue,
   InternationalizedDateValue,
   InternationalizedTimeValue,
@@ -13,5 +16,13 @@ export type {
   MapInternationalizedToTemporalTime,
 } from './types';
 
-export { temporalToInternationalizedDateTime } from './temporal-to-internationalized';
-export { internationalizedToTemporalDateTime } from './internationalized-to-temporal';
+export {
+  temporalToInternationalizedDateTime,
+  temporalToInternationalizedDate,
+  temporalToInternationalizedTime,
+} from './temporal-to-internationalized';
+export {
+  internationalizedToTemporalDateTime,
+  internationalizedToTemporalDate,
+  internationalizedToTemporalTime,
+} from './internationalized-to-temporal';
